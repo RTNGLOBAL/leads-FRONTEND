@@ -108,7 +108,8 @@ const ResetPassword = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     edge="end"
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+{showPassword ? <VisibilityOff sx={{ color: 'white' }} /> : <Visibility sx={{ color: 'white' }} />}
+
                   </IconButton>
                 </InputAdornment>
               ),
@@ -147,7 +148,8 @@ const ResetPassword = () => {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     edge="end"
                   >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    {showConfirmPassword ? <VisibilityOff sx={{ color: 'white' }} /> : <Visibility sx={{ color: 'white' }} />}
+
                   </IconButton>
                 </InputAdornment>
               ),
