@@ -29,7 +29,8 @@ import {
   FormControl,
   InputLabel,
   Autocomplete,
-  Switch
+  Switch,
+    CircularProgress
 } from '@mui/material';
 import axios from 'axios';
 import EditIcon from '@mui/icons-material/Edit';
@@ -53,6 +54,7 @@ const AdminDashboard = () => {
   });
   const [allIndustries, setAllIndustries] = useState([]);
   const [allServices, setAllServices] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -60,6 +62,8 @@ const AdminDashboard = () => {
 
   const fetchData = async () => {
     try {
+            setLoading(true);
+
       const [vendorsResponse, buyersResponse] = await Promise.all([
         axios.get(`${process.env.REACT_APP_BACKEND_URL}/lead/getAllVendors`),
         axios.get(`${process.env.REACT_APP_BACKEND_URL}/lead/getAllBuyers`)
@@ -91,6 +95,8 @@ const AdminDashboard = () => {
       }
     } catch (error) {
       console.error('Error fetching data:', error);
+ } finally {
+      setLoading(false);
     }
   };
 
@@ -866,6 +872,16 @@ const AdminDashboard = () => {
     link.download = `${type}_data_${new Date().toLocaleDateString()}.csv`;
     link.click();
   };
+if (loading) return (
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      minHeight: '100vh' 
+    }}>
+      <CircularProgress sx={{ color: '#4998F8' }} />
+    </Box>
+  );
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
