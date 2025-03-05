@@ -135,7 +135,7 @@ const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     edge="end"
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  {showPassword ? <VisibilityOff sx={{ color: 'white' }} /> : <Visibility sx={{ color: 'white' }} />}
                   </IconButton>
                 </InputAdornment>
               ),
