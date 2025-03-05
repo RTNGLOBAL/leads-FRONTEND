@@ -19,7 +19,8 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
+  MenuItem,
+  CircularProgress
 } from '@mui/material';
 import { Check as CheckIcon, Close as CloseIcon, Business as BusinessIcon, FileDownload as FileDownloadIcon } from '@mui/icons-material';
 import axios from 'axios';
@@ -105,6 +106,7 @@ const VendorDashboard = () => {
       const name = `${buyer.firstName} ${buyer.lastName}`.toLowerCase();
       const company = buyer.companyName.toLowerCase();
       const searchQuery = filters.searchQuery.toLowerCase();
+      const matchDate = new Date(matchData.buyer.createdAt);
 
       const matchesSearch = !filters.searchQuery || 
         name.includes(searchQuery) || 
@@ -113,15 +115,17 @@ const VendorDashboard = () => {
       const matchesIndustry = !filters.industry || 
         buyer.industries.includes(filters.industry);
 
-      const matchesService = !filters.service || 
-        buyer.services.some(s => s.service === filters.service);
+      const matchesMonth = !filters.month && filters.month !== 0 || 
+        matchDate.getMonth() === parseInt(filters.month);
 
-      return matchesSearch && matchesIndustry && matchesService;
+      return matchesSearch && matchesIndustry && matchesService && matchesMonth;
     });
   };
-
-  const exportToCSV = () => {
-    const csvData = filterBuyers(filterBuyersByStatus(activeTab === 0 ? 'new' : activeTab === 1 ? 'accepted' : 'rejected')).map(matchData => ({
+onst exportToCSV = () => {
+    // Only export filtered buyers from the current active tab
+    const currentBuyers = filterBuyers(filterBuyersByStatus(activeTab === 0 ? 'new' : activeTab === 1 ? 'accepted' : 'rejected'));
+    
+    const csvData = currentBuyers.map(matchData => ({
       'Company Name': matchData.buyer.companyName,
       'Contact Person': `${matchData.buyer.firstName} ${matchData.buyer.lastName}`,
       'Email': matchData.buyer.email,
@@ -129,9 +133,14 @@ const VendorDashboard = () => {
       'Industries': matchData.buyer.industries.join(', '),
       'Services': matchData.buyer.services.map(s => s.service).join(', '),
       'Status': activeTab === 0 ? 'New' : activeTab === 1 ? 'Accepted' : 'Rejected',
-      'Match Date': new Date(matchData.buyer.createdAt).toLocaleDateString()
+      'Match Date': new Date(matchData.buyer.createdAt).toLocaleDateString(),
+      'Match Reasons': matchData.matchReasons.join('; ')
     }));
 
+    if (csvData.length === 0) {
+      alert('No data to export');
+      return;
+    }
     const headers = Object.keys(csvData[0]);
     const csvContent = [
       headers.join(','),
@@ -141,7 +150,7 @@ const VendorDashboard = () => {
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `matched_buyers_${activeTab}_${new Date().toLocaleDateString()}.csv`;
+    link.download = `matched_buyers_${activeTab === 0 ? 'new' : activeTab === 1 ? 'accepted' : 'rejected'}_${new Date().toLocaleDateString()}.csv`;
     link.click();
   };
 
@@ -218,7 +227,17 @@ const VendorDashboard = () => {
     </Box>
   );
 
-  if (loading) return <Typography>Loading...</Typography>;
+  
+  if (loading) return (
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      minHeight: '100vh' 
+    }}>
+      <CircularProgress sx={{ color: '#4998F8' }} />
+    </Box>
+  );
   if (error) return <Typography color="error">{error}</Typography>;
   if (!vendorData) return <Typography>No vendor data found</Typography>;
 
@@ -242,7 +261,7 @@ const VendorDashboard = () => {
                   color="primary"
                   sx={{
                     fontSize: '1rem',
-                    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                    background: '#4998F8',
                     color: 'white',
                     fontWeight: 500,
                     p: 2
@@ -378,7 +397,7 @@ const VendorDashboard = () => {
                   startIcon={<FileDownloadIcon />}
                   onClick={exportToCSV}
                   sx={{
-                    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                    background: '#4998F8',
                     color: 'white'
                   }}
                 >
