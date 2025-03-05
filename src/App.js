@@ -7,6 +7,8 @@ import Signup from './components/signup';
 import AdminDashboard from './Dashboard/AdminDashboard/AdminDashboard';
 import VendorDashboard from './Dashboard/VendorDashboard/VendorDashboard';
 import BuyerDashboard from './Dashboard/BuyerDashboard/BuyerDashboard';
+import ForgetPassword from './components/forgetpasswor';
+import ResetPassword from './components/ResetPassword';
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route path="/vendor/:email" element={<VendorRegistration />} />
           <Route path="/buyer" element={<BuyerForm />} />
           <Route path="/buyer/:email" element={<BuyerForm />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
+<Route path="/reset-password/:token" element={<ResetPassword />} />
         </Routes>
       </div>
     </Router>
@@ -29,3 +33,4 @@ const App = () => {
 };
 
 export default App;
+
