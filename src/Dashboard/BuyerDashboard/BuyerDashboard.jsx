@@ -22,6 +22,7 @@ import {
   FormControl,
   InputLabel,
   Select,
+  CircularProgress,
 } from '@mui/material';
 import BusinessIcon from '@mui/icons-material/Business';
 import EditIcon from '@mui/icons-material/Edit';
@@ -59,6 +60,34 @@ const BuyerDashboard = () => {
     service: ''
   });
 
+  const serviceOptions = [
+    'Web Development',
+    'Mobile App Development',
+    'UI/UX Design',
+    'Digital Marketing',
+    'SEO Services',
+    'Content Writing',
+    'Cloud Services',
+    'IT Consulting',
+    'Cybersecurity',
+    'Data Analytics'
+  ];
+
+  const timeframeOptions = [
+    'Immediate',
+    '1-3 months',
+    '3-6 months',
+    '6+ months',
+    'Ongoing'
+  ];
+
+  const budgetOptions = [
+    'Under $5,000',
+    '$5,000 - $10,000',
+    '$10,000 - $25,000',
+    '$25,000 - $50,000',
+    '$50,000+'
+  ];
   useEffect(() => {
     fetchBuyerData();
   }, []);
@@ -249,7 +278,16 @@ const BuyerDashboard = () => {
     </Box>
   );
 
-  if (loading) return <Typography sx={{ color: '#fff' }}>Loading...</Typography>;
+  if (loading) return (
+    <Box sx={{ 
+      display: 'flex', 
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      minHeight: '100vh' 
+    }}>
+      <CircularProgress sx={{ color: '#4998F8' }} />
+    </Box>
+  );
   if (error) return <Typography color="error">{error}</Typography>;
   if (!buyerData) return <Typography sx={{ color: '#fff' }}>No buyer data found</Typography>;
 
@@ -314,9 +352,9 @@ const BuyerDashboard = () => {
                   startIcon={<EditIcon />}
                   onClick={handleAllServicesDialogOpen}
                   sx={{
-                    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                    background: '#4998F8',
                     '&:hover': {
-                      background: 'linear-gradient(45deg, #1976D2 30%, #1CB5E0 90%)'
+                      background: '#4998F8'
                     }
                   }}
                 >
@@ -436,7 +474,7 @@ const BuyerDashboard = () => {
                   startIcon={<FileDownloadIcon />}
                   onClick={exportToCSV}
                   sx={{
-                    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                    background: '#4998F8',
                     color: 'white'
                   }}
                 >
@@ -537,7 +575,8 @@ const BuyerDashboard = () => {
             <Typography variant="h6" sx={{ color: '#fff', mb: 2 }}>Add New Service</Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
-                <TextField
+   <TextField
+                  select
                   fullWidth
                   label="Service"
                   value={newService.service}
@@ -550,9 +589,13 @@ const BuyerDashboard = () => {
                     },
                     '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
                   }}
-                />
+                >
+                  {serviceOptions.map((option) => (
+                    <MenuItem key={option} value={option}>{option}</MenuItem>
+                  ))}
+                </TextField>
               </Grid>
-              <Grid item xs={12} sm={3}>
+                            <Grid item xs={12} sm={3}>
                 <TextField
                   select
                   fullWidth
@@ -568,14 +611,14 @@ const BuyerDashboard = () => {
                     '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
                   }}
                 >
-                  <MenuItem value="Immediate">Immediate</MenuItem>
-                  <MenuItem value="1-3 months">1-3 months</MenuItem>
-                  <MenuItem value="3-6 months">3-6 months</MenuItem>
-                  <MenuItem value="6+ months">6+ months</MenuItem>
+                  {timeframeOptions.map((option) => (
+                    <MenuItem key={option} value={option}>{option}</MenuItem>
+                  ))}
                 </TextField>
               </Grid>
               <Grid item xs={12} sm={3}>
                 <TextField
+                  select
                   fullWidth
                   label="Budget"
                   value={newService.budget}
@@ -588,7 +631,11 @@ const BuyerDashboard = () => {
                     },
                     '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
                   }}
-                />
+                >
+                  {budgetOptions.map((option) => (
+                    <MenuItem key={option} value={option}>{option}</MenuItem>
+                  ))}
+                </TextField>
               </Grid>
               <Grid item xs={12} sm={2}>
                 <Button
@@ -598,9 +645,9 @@ const BuyerDashboard = () => {
                   onClick={handleAddService}
                   sx={{
                     height: '56px',
-                    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+                    background: '#4998F8',
                     '&:hover': {
-                      background: 'linear-gradient(45deg, #1976D2 30%, #1CB5E0 90%)'
+                      background: '#4998F8'
                     }
                   }}
                 >
@@ -649,9 +696,9 @@ const BuyerDashboard = () => {
             onClick={handleUpdateAllServices}
             variant="contained"
             sx={{
-              background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+              background: '#4998F8',
               '&:hover': {
-                background: 'linear-gradient(45deg, #1976D2 30%, #1CB5E0 90%)'
+                background: '#4998F8'
               }
             }}
           >
@@ -671,8 +718,9 @@ const BuyerDashboard = () => {
         }}
       >
         <DialogTitle sx={{ color: '#fff' }}>Edit Service</DialogTitle>
-        <DialogContent>
+                <DialogContent>
           <TextField
+            select
             fullWidth
             label="Service"
             value={editFormData.service}
@@ -686,7 +734,11 @@ const BuyerDashboard = () => {
               },
               '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
             }}
-          />
+          >
+            {serviceOptions.map((option) => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
+          </TextField>
           <TextField
             select
             fullWidth
@@ -703,12 +755,12 @@ const BuyerDashboard = () => {
               '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
             }}
           >
-            <MenuItem value="Immediate">Immediate</MenuItem>
-            <MenuItem value="1-3 months">1-3 months</MenuItem>
-            <MenuItem value="3-6 months">3-6 months</MenuItem>
-            <MenuItem value="6+ months">6+ months</MenuItem>
+            {timeframeOptions.map((option) => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
           </TextField>
           <TextField
+            select
             fullWidth
             label="Budget"
             value={editFormData.budget}
@@ -722,7 +774,11 @@ const BuyerDashboard = () => {
               },
               '& .MuiInputLabel-root': { color: 'rgba(255, 255, 255, 0.7)' }
             }}
-          />
+          >
+            {budgetOptions.map((option) => (
+              <MenuItem key={option} value={option}>{option}</MenuItem>
+            ))}
+          </TextField>
         </DialogContent>
         <DialogActions sx={{ p: 2 }}>
           <Button
@@ -738,9 +794,9 @@ const BuyerDashboard = () => {
             onClick={handleEditFormSubmit}
             variant="contained"
             sx={{
-              background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+              background: '#4998F8',
               '&:hover': {
-                background: 'linear-gradient(45deg, #1976D2 30%, #1CB5E0 90%)'
+                background: '#4998F8'
               }
             }}
           >
