@@ -6,10 +6,14 @@ import {
   Button,
   Box,
   Link,
-  Alert
+  Alert,
+  InputAdornment,
+  IconButton,
+  CircularProgress
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,6 +23,7 @@ const Login = () => {
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -118,11 +123,23 @@ const Login = () => {
             fullWidth
             name="password"
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             autoComplete="current-password"
             value={formData.password}
             onChange={handleChange}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => setShowPassword(!showPassword)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             sx={{
               '& .MuiOutlinedInput-root': {
                 '& fieldset': {
@@ -144,18 +161,37 @@ const Login = () => {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              backgroundColor: loading ? "#4998F8c3" : "#4998F8",
+              '&:hover': {
+                backgroundColor: "#3878c8"
+              }
+            }}
             disabled={loading}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
+            {loading ? (
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <CircularProgress size={24} sx={{ color: 'white', mr: 1 }} />
+                Signing in...
+              </Box>
+            ) : 'Sign In'}
           </Button>
-          <Box sx={{ textAlign: 'center' }}>
+          <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 1 }}>
             <Link
               href="/signup"
               variant="body2"
-              sx={{ color: 'var(--text-color)' }}
+              sx={{ color: "#4998F8" }}
             >
               {"Don't have an account? Sign Up"}
+            </Link>
+            <Link
+              href="/forgot-password"
+              variant="body2"
+              sx={{ color: "#4998F8" }}
+            >
+              {"Forgot password?"}
             </Link>
           </Box>
         </Box>
