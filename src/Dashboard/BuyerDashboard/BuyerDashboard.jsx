@@ -61,32 +61,40 @@ const BuyerDashboard = () => {
   });
 
   const serviceOptions = [
-    'Web Development',
-    'Mobile App Development',
-    'UI/UX Design',
-    'Digital Marketing',
-    'SEO Services',
-    'Content Writing',
-    'Cloud Services',
-    'IT Consulting',
-    'Cybersecurity',
-    'Data Analytics'
+    "Customer Relationship Management Solutions",
+"Marketing Automation Platforms",
+"Sales Enablement Tools",
+"Financial Planning and Analysis Services",
+"Accounting and Bookkeeping Services",
+"Payroll Processing Services",
+"Recruitment and Talent Acquisition Services",
+"Project Management Tools",
+"Supply Chain Management Solutions",
+"Logistics and Transportation Services",
+"E-commerce Platforms",
+"Business Intelligence and Analytics Tools",
+"Enterprise Resource Planning (ERP) Systems",
+"Open-Source Intelligence (OSINT) Services",
+"Physical Security and Surveillance Systems",
+"Access Control Solutions",
+"Cybersecurity Services",
+'Cloud Computing Services',
+"Payment Processing Solutions",
+"Manufacturing Automation Solutions"
   ];
 
   const timeframeOptions = [
-    'Immediate',
-    '1-3 months',
-    '3-6 months',
-    '6+ months',
-    'Ongoing'
+    "1-2 weeks",
+    "1 month",
+    "3 months"'
   ];
 
   const budgetOptions = [
-    'Under $5,000',
-    '$5,000 - $10,000',
-    '$10,000 - $25,000',
-    '$25,000 - $50,000',
-    '$50,000+'
+   "$5,000+",
+    "$10,000+",
+    "$25,000+",
+    "$50,000+",
+    "$100,000+"
   ];
   useEffect(() => {
     fetchBuyerData();
